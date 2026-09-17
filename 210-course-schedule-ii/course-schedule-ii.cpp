@@ -1,54 +1,36 @@
 class Solution {
 public:
-    stack<int> st;
-
-    bool dfs(int u, vector<vector<int>>& adj,
-             vector<bool>& visited, vector<bool>& inrec) {
-
-        visited[u] = true;
-        inrec[u] = true;
-
-        for(auto v : adj[u]) {
-
-            if(!visited[v]) {
-                if(!dfs(v, adj, visited, inrec))
-                    return false;
-            }
-            else if(inrec[v]) {
-                return false;   // cycle
-            }
-        }
-
-        inrec[u] = false;
-        st.push(u);
-
-        return true;
-    }
 
     vector<int> findOrder(int n, vector<vector<int>>& pre) {
 
         vector<vector<int>> adj(n);
-
+        vector<int>in(n,0);
         for(auto x : pre) {
             adj[x[1]].push_back(x[0]);
+            in[x[0]]++;
         }
-
-        vector<bool> visited(n, false);
-        vector<bool> inrec(n, false);
-
+        queue<int>q;
         for(int i = 0; i < n; i++) {
-            if(!visited[i]) {
-                if(!dfs(i, adj, visited, inrec))
-                    return {};
+           if(in[i]==0){
+            q.push(i);
+           }
+        }
+        vector<int> ans;
+        while(!q.empty()){
+            int u=q.front();
+             ans.push_back(u);
+            q.pop();
+            for(auto v:adj[u]){
+                in[v]--;
+                if(in[v]==0){
+                    q.push(v);
+                }
             }
         }
-
-        vector<int> ans;
-
-        while(!st.empty()) {
-            ans.push_back(st.top());
-            st.pop();
+        if(ans.size()!=n){
+            return {};
         }
+
 
         return ans;
     }
