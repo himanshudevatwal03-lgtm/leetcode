@@ -1,6 +1,7 @@
 class Solution {
 public:
 //abhi nhi aata hai baad me samjhne ke liye rkha hai hai 
+//now i understood the concept,and also i can write it anytime 
     int rob(vector<int>& nums) {
         int n = nums.size();
 
